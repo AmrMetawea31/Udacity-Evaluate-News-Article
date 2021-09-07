@@ -1,67 +1,70 @@
  import {checkURL} from './checkURL'
  import "babel-polyfill";
 
-function handleSubmit(event) {
+ async function handleSubmit(event) {
     event.preventDefault()
-
     let formText = document.getElementById('url').value
     if(checkURL(formText)){
-    
-    console.log("::: Form Submitted :::")
-
-    postArticle('http://localhost:8082/api', {url: formText})
-
-    .then(function(res) {
+    let response = await fetch("/api", {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({url:formText})
+    });
+    const data =  await response.json()
+    if(data.status.msg == 'OK'){
         
-        document.getElementById("score_tag").innerHTML = `Polarity: ` + scoreTag(res.score_tag)
-         document.getElementById("agreement").innerHTML = `Agreement: ${res.agreement}`;
-        document.getElementById("subjectivity").innerHTML = `Subjectivity: ${res.subjectivity}`;
-        document.getElementById("confidence").innerHTML = `Confidence: ${res.confidence}`;
-        document.getElementById("irony").innerHTML = `Irony: ${res.irony}`;
-    })
+        outputResult(data, scoreTag(data.score_tag))
+    }else{
+        alert("Something went wrong, Please try again")
+    }
     } else {
         alert('OOOPS, INVALID URL!!!');
     }
 }    
-
-      const postArticle = async (url = "", data = {}) => {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-        try {
-            const datas = await response.json();
-            return datas;
-        } catch (error) {
-            console.log('error', error);
-        }
-    };
-
+    
+const outputResult = (data, scoreTag)=>{
+    document.getElementById("score_tag").innerHTML = `Polarity: ${scoreTag}`
+     document.getElementById("agreement").innerHTML = `Agreement: ${data.agreement}` 
+     document.getElementById("subjectivity").innerHTML = `Subjectivity: ${data.subjectivity}`;
+     document.getElementById("confidence").innerHTML = `Confidence: ${data.confidence}`;
+     document.getElementById("irony").innerHTML = `Irony: ${data.irony}`;
+}
 const scoreTag = (score) => {
     let display;
     switch (score){
         case 'P+':
-            display = 'strong positive';
-            break;
+            return(
+            display = 'STRONG POSITIVE'
+            )
+          
         case 'P':
-            display = 'positive';
-            break;
+            return(
+            display = 'POSITIVE'
+            )
+           
         case 'NEW':
-            display = 'neutral';
-            break;
+            return(
+            display = 'NEUTRAL'
+            )
+           
         case 'N':
-            display = 'negative';
-            break;
+            return(
+            display = 'NEGATIVE'
+            )
+          
         case 'N+':
-            display = 'strong negative';
-            break;
+            return(
+            display = 'STRONG NEGATIVE'
+            )
+         
         case 'NONE':
-            display = 'no sentiment';
+            return(
+            display = 'NO SENTIMENT'
+            )
     }
-    return display.toUpperCase();
+    
 }
 export { handleSubmit }
 export { scoreTag }
