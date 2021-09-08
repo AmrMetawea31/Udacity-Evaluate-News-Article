@@ -5,7 +5,7 @@
     event.preventDefault()
     let formText = document.getElementById('url').value
     if(checkURL(formText)){
-    let response = await fetch("/api", {
+    let response = await fetch("/api_data", {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
