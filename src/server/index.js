@@ -22,8 +22,8 @@ app.post("/api_data", async function (req, res) {
     const baseApiURL = 'https://api.meaningcloud.com/sentiment-2.1?'
     const API_KEY  = process.env.API_KEY
     let url = req.body.url;
-    const apiURL = `${baseApiURL}key=${API_KEY}&url=${url}&lang=en`
-    const response = await fetch(apiURL)
+    const apiFullURL = `${baseApiURL}key=${API_KEY}&url=${url}&lang=en`
+    const response = await fetch(apiFullURL)
     const body = await response.json();
     res.json(body);
     
