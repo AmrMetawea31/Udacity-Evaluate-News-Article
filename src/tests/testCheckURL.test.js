@@ -1,6 +1,6 @@
 import { checkURL } from "../client/js/checkURL";
 
-describe("Testing the submit functionality", () => {
+describe("Testing submit", () => {
   test("Testing the checkURL() function is defined", () => {
     expect(checkURL).toBeDefined();
   });
