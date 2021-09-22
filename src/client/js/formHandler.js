@@ -3,14 +3,14 @@
 
  async function handleSubmit(event) {
     event.preventDefault()
-    let formText = document.getElementById('url').value
-    if(checkURL(formText)){
+    let form = document.getElementById('url').value
+    if(checkURL(form)){
     let response = await fetch("/api_data", {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify({url:formText})
+        body: JSON.stringify({url:form})
     });
     const data =  await response.json()
     if(data.status.msg == 'OK'){
