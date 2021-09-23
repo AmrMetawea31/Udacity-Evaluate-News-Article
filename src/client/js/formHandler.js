@@ -5,7 +5,7 @@
     event.preventDefault()
     let form = document.getElementById('url').value
     if(checkURL(form)){
-    let response = await fetch("/api_data", {
+    let response = await fetch("http://localhost:8082/api_data", {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
